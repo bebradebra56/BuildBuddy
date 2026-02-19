@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "727132517952",
+    "project_id": "buildbuddy-237b9",
+    "storage_bucket": "buildbuddy-237b9.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:727132517952:android:d5432f846806af895d51a5",
+        "android_client_info": {
+          "package_name": "com.buildsof.budsde"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDdwMLwmQzoqK8gwHJl8iG2vYnl-qW0aE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

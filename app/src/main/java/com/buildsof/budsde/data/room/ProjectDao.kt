@@ -1,0 +1,32 @@
+package com.buildsof.budsde.data.room
+
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface ProjectDao {
+    
+    @Query("SELECT * FROM projects ORDER BY startDate DESC")
+    fun getAllProjects(): Flow<List<ProjectEntity>>
+    
+    @Query("SELECT * FROM projects WHERE id = :projectId")
+    suspend fun getProjectById(projectId: String): ProjectEntity?
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProject(project: ProjectEntity)
+    
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProjects(projects: List<ProjectEntity>)
+    
+    @Update
+    suspend fun updateProject(project: ProjectEntity)
+    
+    @Delete
+    suspend fun deleteProject(project: ProjectEntity)
+    
+    @Query("DELETE FROM projects WHERE id = :projectId")
+    suspend fun deleteProjectById(projectId: String)
+    
+    @Query("DELETE FROM projects")
+    suspend fun deleteAllProjects()
+}
