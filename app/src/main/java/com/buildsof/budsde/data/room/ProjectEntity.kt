@@ -8,6 +8,7 @@ import com.buildsof.budsde.data.*
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
+import java.lang.reflect.Type
 import java.util.Date
 
 // Singleton Gson instance with custom TypeAdapters
@@ -16,6 +17,10 @@ object GsonProvider {
         .registerTypeAdapter(WorkConfig::class.java, WorkConfigTypeAdapter())
         .create()
 }
+
+// TypeToken workarounds for ProGuard/R8
+private class RoomListTypeToken : TypeToken<List<Room>>()
+private class NoteListTypeToken : TypeToken<List<Note>>()
 
 @Entity(tableName = "projects")
 @TypeConverters(Converters::class)
@@ -34,6 +39,8 @@ data class ProjectEntity(
 
 class Converters {
     private val gson = GsonProvider.gson
+    private val roomListType: Type = RoomListTypeToken().type
+    private val noteListType: Type = NoteListTypeToken().type
     
     @TypeConverter
     fun fromRoomList(value: List<Room>): String {
@@ -42,8 +49,7 @@ class Converters {
     
     @TypeConverter
     fun toRoomList(value: String): List<Room> {
-        val type = object : TypeToken<List<Room>>() {}.type
-        return gson.fromJson(value, type) ?: emptyList()
+        return gson.fromJson(value, roomListType) ?: emptyList()
     }
     
     @TypeConverter
@@ -53,8 +59,7 @@ class Converters {
     
     @TypeConverter
     fun toNoteList(value: String): List<Note> {
-        val type = object : TypeToken<List<Note>>() {}.type
-        return gson.fromJson(value, type) ?: emptyList()
+        return gson.fromJson(value, noteListType) ?: emptyList()
     }
 }
 
@@ -75,8 +80,8 @@ fun Project.toEntity(): ProjectEntity {
 
 fun ProjectEntity.toProject(): Project {
     val gson = GsonProvider.gson
-    val roomsType = object : TypeToken<List<Room>>() {}.type
-    val notesType = object : TypeToken<List<Note>>() {}.type
+    val roomsType = RoomListTypeToken().type
+    val notesType = NoteListTypeToken().type
     
     return Project(
         id = id,

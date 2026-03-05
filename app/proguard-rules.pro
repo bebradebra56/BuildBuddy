@@ -54,3 +54,42 @@
 -keepclassmembers class * {
     @androidx.room.TypeConverter *;
 }
+
+############ GSON ############
+# Gson uses generic type information stored in a class file when working with fields.
+# Proguard removes such information by default, so configure it to keep all of it.
+-keepattributes Signature
+
+# For using GSON @Expose annotation
+-keepattributes *Annotation*
+
+# Gson specific classes
+-dontwarn sun.misc.**
+-keep class com.google.gson.** { *; }
+-keep class * implements com.google.gson.TypeAdapter
+-keep class * implements com.google.gson.TypeAdapterFactory
+-keep class * implements com.google.gson.JsonSerializer
+-keep class * implements com.google.gson.JsonDeserializer
+
+# Prevent R8 from leaving Data object members always null
+-keepclassmembers,allowobfuscation class * {
+  @com.google.gson.annotations.SerializedName <fields>;
+}
+
+# Keep generic signature of TypeToken (class uses TypeToken to get generic info)
+-keep class com.google.gson.reflect.TypeToken { *; }
+-keep class * extends com.google.gson.reflect.TypeToken
+
+# Application classes that will be serialized/deserialized over Gson
+-keep class com.buildsof.budsde.data.** { *; }
+-keep class com.buildsof.budsde.data.room.** { *; }
+
+# Keep WorkConfig sealed class and all subclasses
+-keep class com.buildsof.budsde.data.WorkConfig { *; }
+-keep class com.buildsof.budsde.data.WorkConfig$* { *; }
+
+# Keep custom TypeAdapter
+-keep class com.buildsof.budsde.data.room.WorkConfigTypeAdapter { *; }
+
+# Keep all model classes fields
+-keepclassmembers class com.buildsof.budsde.data.** { *; }
