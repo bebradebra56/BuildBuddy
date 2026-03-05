@@ -3,7 +3,7 @@ workflows:
     name: Android release workflow
     environment:
       android_signing:
-        - build_buddy_ketstore
+        - build_buddy_keystore
       vars:
         PACKAGE_NAME: "com.buildsof.budsde"
     scripts:
