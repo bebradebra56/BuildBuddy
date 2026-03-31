@@ -131,9 +131,7 @@ class BuildBuddyApplication : Application() {
                                 Log.d(BUILD_BUDDY_MAIN_TAG, "After 5s: $resp")
                                 if (resp?.get("af_status")?.jsonPrimitive?.content == "Organic" || resp?.get("af_status") == null) {
                                     buildBuddyResume(
-                                        BuildBuddyAppsFlyerState.BuildBuddySuccess(
-                                            p0
-                                        )
+                                        BuildBuddyAppsFlyerState.BuildBuddyError
                                     )
                                 } else {
                                     buildBuddyResume(
